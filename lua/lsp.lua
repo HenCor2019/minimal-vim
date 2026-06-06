@@ -1,8 +1,32 @@
 require("mason").setup()
 
-vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = "Go to definition" })
-vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, { desc = "Format Local buffer" })
+require("mason-tool-installer").setup({
+    ensure_installed = {
+        -- LSP
+        "lua-language-server",
+        "marksman",
+        "gopls",
+        "rust-analyzer",
+        "typescript-language-server",
+        "pyright",
+        -- Formatters / linters
+        "prettierd",
+        "ruff",
+    },
+    run_on_start = true,
+})
+
+vim.keymap.set("n", "<C-]>", vim.lsp.buf.definition, { desc = "Go to definition" })
+vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "Go to references" })
 vim.keymap.set("n", "df", vim.diagnostic.open_float, { desc = "Show line diagnostics" })
+
+-- Al elegir una entrada del quickfix (p. ej. referencias) saltar y cerrar la lista
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "qf",
+    callback = function()
+        vim.keymap.set("n", "<CR>", "<CR>:cclose<CR>", { buffer = true, silent = true, desc = "Jump and close quickfix" })
+    end,
+})
 
 vim.diagnostic.config({ virtual_text = true })
 
@@ -24,4 +48,6 @@ vim.lsp.enable({
     "marksman",
     "gopls",
     "rust_analyzer",
+    "ts_ls",
+    "pyright",
 })

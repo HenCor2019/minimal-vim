@@ -47,7 +47,7 @@ mv ~/.config/nvim ~/.config/nvim.bak
 mv ~/.local/share/nvim ~/.local/share/nvim.bak
 
 # 2. Clonar este repositorio
-git clone https://github.com/<tu-usuario>/<tu-repo>.git ~/.config/nvim
+git clone https://github.com/HenCor2019/minimal-vim.git ~/.config/nvim
 
 # 3. Abrir Neovim
 nvim
@@ -60,6 +60,10 @@ En el primer arranque:
 3. **Treesitter** compilará los parsers de los lenguajes configurados.
 
 Reinicia Neovim (o usa `,re`) cuando termine la instalación.
+
+> 🤖 **¿Instalación asistida por IA?** Abre un agente (Claude Code u otro) en el repo
+> y pídele que siga [`CLAUDE.md`](CLAUDE.md): incluye verificación/instalación de
+> prerequisitos por sistema operativo e instalación de plugins en modo headless.
 
 ---
 

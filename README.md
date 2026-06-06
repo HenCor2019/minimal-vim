@@ -82,7 +82,7 @@ nvim/
     ├── lsp.lua              # Mason + LSP + diagnósticos
     └── plugins/              # Configuración por plugin
         ├── mini-files.lua
-        ├── mini-pick.lua
+        ├── mini-pick.lua         # + integra vim.ui.select
         ├── mini-completion.lua
         ├── mini-snippets.lua
         ├── mini-surround.lua
@@ -90,11 +90,20 @@ nvim/
         ├── mini-notify.lua
         ├── mini-cmdline.lua
         ├── mini-animate.lua
+        ├── mini-icons.lua
+        ├── mini-ai.lua           # Text objects (argumento, función…)
+        ├── mini-pairs.lua        # Auto-cierre de pares
+        ├── mini-move.lua         # Mover líneas/bloques
+        ├── mini-splitjoin.lua    # Partir/unir colecciones (gS)
         ├── conform.lua
         ├── harpoon.lua
         ├── copilot.lua
         ├── copilot-chat.lua
-        └── smart-splits.lua
+        ├── smart-splits.lua
+        ├── render-markdown.lua
+        ├── snacks.lua            # Solo módulo input (vim.ui.input)
+        ├── dap.lua               # Debug (DAP) + attach a Docker
+        └── neotest.lua           # Testing (Jest, Vitest, Go, Python)
 ```
 
 ---
@@ -105,7 +114,7 @@ nvim/
 |--------|-----------|
 | [`rose-pine/neovim`](https://github.com/rose-pine/neovim) | Colorscheme activo |
 | [`vim-moonfly-colors`](https://github.com/bluz71/vim-moonfly-colors) | Colorscheme alternativo |
-| [`mini.nvim`](https://github.com/nvim-mini/mini.nvim) | Suite modular: files, pick, completion, snippets, surround, diff, notify, cmdline, animate |
+| [`mini.nvim`](https://github.com/nvim-mini/mini.nvim) | Suite modular: files, pick, completion, snippets, surround, diff, notify, cmdline, animate, icons, **ai, pairs, move, splitjoin** |
 | [`nvim-treesitter`](https://github.com/nvim-treesitter/nvim-treesitter) | Resaltado de sintaxis (rama `main`) |
 | [`nvim-lspconfig`](https://github.com/neovim/nvim-lspconfig) | Configuración de servidores LSP |
 | [`mason.nvim`](https://github.com/mason-org/mason.nvim) + [`mason-tool-installer`](https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim) | Instalación automática de LSP/formatters |
@@ -115,8 +124,12 @@ nvim/
 | [`copilot.lua`](https://github.com/zbirenbaum/copilot.lua) | Sugerencias de GitHub Copilot |
 | [`CopilotChat.nvim`](https://github.com/CopilotC-Nvim/CopilotChat.nvim) | Chat IA dentro del editor |
 | [`smart-splits.nvim`](https://github.com/mrjones2014/smart-splits.nvim) | Movimiento y redimensionado de splits |
+| [`render-markdown.nvim`](https://github.com/MeanderingProgrammer/render-markdown.nvim) | Renderiza archivos Markdown bonitos dentro del buffer |
 | [`friendly-snippets`](https://github.com/rafamadriz/friendly-snippets) | Colección de snippets |
-| [`plenary.nvim`](https://github.com/nvim-lua/plenary.nvim) | Dependencia común (Harpoon, etc.) |
+| [`snacks.nvim`](https://github.com/folke/snacks.nvim) | Solo el módulo `input`: ventana flotante para `vim.ui.input` (p. ej. renombrar) |
+| [`nvim-dap`](https://github.com/mfussenegger/nvim-dap) + [`dap-ui`](https://github.com/rcarriga/nvim-dap-ui) + [`dap-virtual-text`](https://github.com/theHamsta/nvim-dap-virtual-text) | Depuración (breakpoints, step, inspección) con valores inline |
+| [`neotest`](https://github.com/nvim-neotest/neotest) + adaptadores [`jest`](https://github.com/nvim-neotest/neotest-jest) · [`vitest`](https://github.com/marilari88/neotest-vitest) · [`golang`](https://github.com/fredrikaverpil/neotest-golang) · [`python`](https://github.com/nvim-neotest/neotest-python) | Ejecutar y depurar tests dentro del editor |
+| [`plenary.nvim`](https://github.com/nvim-lua/plenary.nvim) + [`nvim-nio`](https://github.com/nvim-neotest/nvim-nio) | Dependencias comunes (Harpoon, neotest, dap-ui…) |
 
 ---
 
@@ -128,7 +141,9 @@ nvim/
 
 **Formateadores:** `prettierd`/`prettier` (JS/TS) · `ruff` (Python)
 
-**Parsers de Treesitter:** go, rust, typescript, javascript, tsx, python, html, css, json, bash, http, dockerfile
+**Adaptadores de depuración** (autoinstalados con Mason): `delve` (Go) · `debugpy` (Python) · `js-debug-adapter` (Node/NestJS)
+
+**Parsers de Treesitter:** go, rust, typescript, javascript, tsx, python, html, css, json, bash, http, dockerfile, markdown, markdown_inline
 
 ---
 
@@ -153,6 +168,18 @@ nvim/
 | `<leader>X` | Normal | Hacer el archivo ejecutable (`chmod +x`) |
 | `<leader>u` | Normal | Abrir el Undotree nativo |
 | `<leader>re` | Normal | Reiniciar la configuración (`:restart`) |
+
+### Edición (mini.ai · move · splitjoin · pairs)
+
+| Tecla | Modo | Acción |
+|-------|------|--------|
+| `dia` / `cia` | Normal | Borrar / cambiar el **argumento** bajo el cursor |
+| `daf` / `cif` | Normal | Borrar / cambiar la **llamada a función** |
+| `vit` | Normal | Seleccionar dentro de una **tag** |
+| `gS` | Normal | Alternar entre una línea y multilínea (objetos, arrays, args) |
+| `<A-h/j/k/l>` | Normal / Visual | Mover la línea o selección (en macOS, tecla Option) |
+
+> Auto-cierre de paréntesis, corchetes, llaves y comillas con `mini.pairs`.
 
 ### Ventanas / Splits (smart-splits)
 
@@ -199,6 +226,7 @@ nvim/
 | `<C-]>` | Ir a la definición |
 | `gr` | Ir a las referencias |
 | `df` | Mostrar diagnóstico de la línea |
+| `vrn` | Renombrar símbolo (LSP rename) |
 | `<leader>f` | Formatear el buffer (conform) |
 
 ### Surround (mini.surround)
@@ -230,6 +258,52 @@ nvim/
 | `<leader>cf` | Normal / Visual | Corregir errores |
 | `<leader>cr` | Normal / Visual | Revisar y sugerir mejoras |
 | `<leader>cq` | Normal | Pregunta rápida al chat |
+
+### Debug (nvim-dap) — prefijo `,D`
+
+> Se usa **`,D` (mayúscula)** para no chocar con `,d` (borrar sin copiar).
+
+| Tecla | Acción |
+|-------|--------|
+| `<leader>Db` | Alternar breakpoint |
+| `<leader>DB` | Breakpoint condicional |
+| `<leader>Dc` | Continuar / **iniciar** (elige configuración) |
+| `<leader>Dn` | Step over |
+| `<leader>Di` | Step into |
+| `<leader>Do` | Step out |
+| `<leader>Dt` | Terminar sesión |
+| `<leader>Dr` | Abrir REPL |
+| `<leader>Dv` | Alternar panel de debug (UI) |
+| `<leader>De` | Evaluar expresión bajo el cursor (también en Visual) |
+
+**Depurar contra Docker.** Como los proyectos corren en contenedores, las configuraciones
+`Attach Docker` se conectan a un puerto de debug que el contenedor debe exponer. Ajusta
+`CONTAINER_WORKDIR` en [`lua/plugins/dap.lua`](lua/plugins/dap.lua) al `WORKDIR` de tu imagen.
+
+| Lenguaje | Arranca así dentro del contenedor | Puerto |
+|----------|-----------------------------------|--------|
+| **Go** | `dlv debug --headless --listen=:2345 --api-version=2 --accept-multiclient` | 2345 |
+| **Python** | `python -m debugpy --listen 0.0.0.0:5678 --wait-for-client -m tu_modulo` | 5678 |
+| **NestJS** | `node --inspect=0.0.0.0:9229 dist/main` (o `nest start --debug 0.0.0.0:9229`) | 9229 |
+
+### Testing (neotest) — prefijo `,t`
+
+Detecta automáticamente el runner según el proyecto: **Jest**, **Vitest**, **Go** y **pytest**.
+Los tests se ejecutan en el host (necesitas los runtimes instalados localmente).
+
+| Tecla | Acción |
+|-------|--------|
+| `<leader>tn` | Ejecutar el test más cercano |
+| `<leader>tf` | Ejecutar todos los del archivo |
+| `<leader>td` | Depurar el test más cercano (vía DAP) |
+| `<leader>ts` | Alternar panel resumen |
+| `<leader>to` | Ver la salida del test |
+| `<leader>tw` | Modo watch del archivo |
+
+> 💡 **Jest vs Vitest:** Vitest usa por convención `*.test.ts`; Jest de NestJS usa `*.spec.ts`.
+> neotest solo encuentra lo que encuentra el runner del proyecto: si `npx jest <archivo>` o
+> `npx vitest run <archivo>` no lo halla desde la terminal, revisa la config del proyecto
+> (`testRegex`/`roots`/`testMatch`).
 
 ---
 

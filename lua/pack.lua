@@ -14,6 +14,19 @@ vim.pack.add({
     "https://github.com/zbirenbaum/copilot.lua",
     "https://github.com/CopilotC-Nvim/CopilotChat.nvim",
     "https://github.com/mrjones2014/smart-splits.nvim",
+    "https://github.com/MeanderingProgrammer/render-markdown.nvim",
+    "https://github.com/folke/snacks.nvim",
+    -- Debug (DAP)
+    "https://github.com/mfussenegger/nvim-dap",
+    "https://github.com/nvim-neotest/nvim-nio",
+    "https://github.com/rcarriga/nvim-dap-ui",
+    "https://github.com/theHamsta/nvim-dap-virtual-text",
+    -- Testing (neotest)
+    "https://github.com/nvim-neotest/neotest",
+    "https://github.com/fredrikaverpil/neotest-golang",
+    "https://github.com/nvim-neotest/neotest-python",
+    "https://github.com/nvim-neotest/neotest-jest",
+    "https://github.com/marilari88/neotest-vitest",
 })
 
 require("plugins.mini-files")
@@ -30,3 +43,14 @@ require("plugins.harpoon")
 require("plugins.copilot")
 require("plugins.copilot-chat")
 require("plugins.smart-splits")
+require("plugins.mini-icons")
+require("plugins.render-markdown")
+require("plugins.snacks")
+-- Tier 1 funcional de mini.nvim (edición)
+require("plugins.mini-ai")
+require("plugins.mini-pairs")
+require("plugins.mini-move")
+require("plugins.mini-splitjoin")
+-- Debug y testing
+require("plugins.dap")
+require("plugins.neotest")

@@ -12,6 +12,10 @@ require("mason-tool-installer").setup({
         -- Formatters / linters
         "prettierd",
         "ruff",
+        -- Debug adapters (DAP)
+        "delve",            -- Go
+        "debugpy",          -- Python
+        "js-debug-adapter", -- Node / NestJS
     },
     run_on_start = true,
 })
@@ -19,6 +23,7 @@ require("mason-tool-installer").setup({
 vim.keymap.set("n", "<C-]>", vim.lsp.buf.definition, { desc = "Go to definition" })
 vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "Go to references" })
 vim.keymap.set("n", "df", vim.diagnostic.open_float, { desc = "Show line diagnostics" })
+vim.keymap.set("n", "vrn", vim.lsp.buf.rename, { desc = "LSP rename symbol" })
 
 -- Al elegir una entrada del quickfix (p. ej. referencias) saltar y cerrar la lista
 vim.api.nvim_create_autocmd("FileType", {

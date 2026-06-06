@@ -4,6 +4,7 @@ local ensure_installed = {
     "go", "rust", "typescript", "python", "javascript", "tsx",
     "html", "css", "json", "bash",
     "http", "dockerfile",
+    "markdown", "markdown_inline",
 }
 
 treesitter.install(ensure_installed)
